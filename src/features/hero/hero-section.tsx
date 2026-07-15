@@ -7,7 +7,7 @@ import { StatusIndicator } from "@/components/ui/status-indicator";
 import { profile } from "@/content/profile";
 import { HeroCodeWindow } from "@/features/hero/hero-code-window";
 import { SystemBootSequence } from "@/features/hero/system-boot-sequence";
-import { SITE_NAME } from "@/lib/constants";
+import { SITE_NAME, withBasePath } from "@/lib/constants";
 import { cn } from "@/lib/cn";
 
 export function HeroSection() {
@@ -57,7 +57,7 @@ export function HeroSection() {
 
             {profile.cvUrl ? (
               <a
-                href={profile.cvUrl}
+                href={withBasePath(profile.cvUrl)}
                 className={cn(
                   buttonClassName({ variant: "secondary", size: "lg" }),
                   "w-full sm:w-auto",

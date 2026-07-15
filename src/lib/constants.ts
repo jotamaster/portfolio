@@ -15,6 +15,18 @@ export const FEATURES = {
   notesSection: false,
 } as const;
 
+export function getBasePath(): string {
+  return (process.env.NEXT_PUBLIC_BASE_PATH ?? "").replace(/\/$/, "");
+}
+
+export function withBasePath(path: string): string {
+  if (!path.startsWith("/") || path.startsWith("//")) {
+    return path;
+  }
+
+  return `${getBasePath()}${path}`;
+}
+
 export function getSiteUrl(): string {
   return (
     process.env.NEXT_PUBLIC_SITE_URL?.replace(/\/$/, "") ||
