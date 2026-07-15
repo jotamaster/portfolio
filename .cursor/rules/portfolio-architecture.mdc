@@ -1,0 +1,159 @@
+---
+description: Reglas de arquitectura y calidad del portafolio JEAN.OS
+globs: src/**/*.{ts,tsx,css}
+alwaysApply: true
+---
+
+# Arquitectura del portafolio
+
+## Principios
+
+* Usa Server Components por defecto.
+* Agrega `"use client"` solamente a componentes interactivos.
+* Mantén los Client Components en las hojas del árbol.
+* Separa contenido, presentación, interacción y servicios.
+* No guardes datos profesionales directamente en componentes.
+* Usa archivos tipados dentro de `src/content`.
+* No utilices `any`.
+* No uses `@ts-ignore`.
+* No desactives reglas de ESLint para ocultar problemas.
+* No agregues estado redundante.
+* No uses `useEffect` para valores derivados.
+* No agregues Context sin una necesidad transversal real.
+* No agregues una biblioteca global de estado.
+* No agregues dependencias sin justificar su necesidad.
+* Evita abstracciones prematuras.
+* Extrae componentes cuando exista reutilización, lógica propia o una responsabilidad clara.
+* Prefiere composición mediante props explícitas y `children`.
+* Evita manipular o clonar `children`.
+* No crees componentes con demasiadas props booleanas.
+* Usa uniones discriminadas para variantes.
+* Usa HTML semántico.
+* Mantén focus visible.
+* Respeta `prefers-reduced-motion`.
+* No dependas de hover para revelar contenido esencial.
+* No inventes métricas, enlaces, resultados o experiencia.
+
+## Estructura
+
+* Componentes genéricos: `src/components/ui`.
+* Layout: `src/components/layout`.
+* Animaciones reutilizables: `src/components/motion`.
+* Funcionalidades: `src/features`.
+* Datos: `src/content`.
+* Utilidades: `src/lib`.
+* Contratos compartidos: `src/types`.
+* Fronteras HTTP: `src/app/api`.
+
+## Componentes
+
+Un componente debe tener una responsabilidad principal.
+
+Los componentes de sección coordinan otros componentes, pero no deben contener toda la implementación visual e interactiva en un solo archivo.
+
+Ejemplo:
+
+```text
+SkillsSection
+├── SectionHeading
+├── SkillsUniverse
+│   └── SkillNode
+└── SkillsGridFallback
+```
+
+No crear componentes basados únicamente en estilos como:
+
+```text
+GreenText
+DarkBox
+FlexRow
+SmallCard
+```
+
+Usar componentes basados en conceptos de la interfaz:
+
+```text
+WindowFrame
+TerminalCommand
+TechBadge
+ProjectCard
+GitCommitCard
+```
+
+## Server y Client Components
+
+Mantén como servidor:
+
+* Layout.
+* Page.
+* HeroSection.
+* AboutSection.
+* ExperienceSection.
+* ProjectsSection.
+* ProjectCard estática.
+* Metadata.
+* Lectura de contenido.
+
+Mantén como cliente solamente cuando sea necesario:
+
+* MobileNavigation.
+* SkillsUniverse.
+* ScrollSpy.
+* ContactForm.
+* CopyButton.
+* Wrappers de Motion.
+
+No conviertas un componente padre en cliente solo porque uno de sus descendientes necesita interacción.
+
+## Estilos
+
+* Usa tokens CSS semánticos.
+* Evita repetir colores arbitrarios.
+* Usa la utilidad `cn`.
+* Mantén clases Tailwind legibles.
+* No construyas dinámicamente nombres incompletos de clases Tailwind.
+* Usa estilos CSS cuando una animación o patrón sea más claro que una lista excesiva de utilities.
+* No uses estilos inline salvo valores dinámicos reales.
+
+## Datos
+
+* Usa `satisfies` para validar contenido.
+* No mezcles JSX con archivos de datos.
+* No muestres enlaces inexistentes.
+* No publiques placeholders.
+* Usa `TODO: confirmar contenido con Jean` cuando falte información.
+* Valida respuestas externas con Zod.
+
+## Animaciones
+
+* Anima preferentemente `opacity` y `transform`.
+* Respeta reduced motion.
+* No animes todo.
+* No agregues Three.js durante el MVP.
+* Las animaciones no deben bloquear contenido ni interacción.
+* Proporciona fallback estático para componentes interactivos.
+
+## Verificación
+
+Después de cada cambio relevante, ejecuta las verificaciones disponibles:
+
+```bash
+pnpm lint
+pnpm test
+pnpm build
+```
+
+Cuando alguna falle:
+
+* Investiga la causa.
+* Corrige el problema real.
+* No ocultes el error.
+* Documenta cualquier bloqueo externo.
+
+Antes de terminar una tarea, informa:
+
+* Archivos modificados.
+* Decisiones.
+* Pruebas ejecutadas.
+* Resultado.
+* Pendientes.
